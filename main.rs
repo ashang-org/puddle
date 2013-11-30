@@ -1,11 +1,16 @@
 #[allow(ctypes)];
 #[no_std];
-#[no_core];
+//#[no_core];
+#[feature(macro_rules)];
+use core::mem::transmute;
+use core::slice::iter;
+use core::iter::Iterator;
+use core::option::{Some, Option, None};
+mod core;
 
 static VGA_WIDTH  : u16 = 80;
 static VGA_HEIGHT : u16 = 24;
 
-mod zero;
 
 enum Color {
     Black       = 0,
@@ -26,7 +31,9 @@ enum Color {
     White       = 15,
 }
 
-fn range(lo: uint, hi: uint, it: &fn(uint)) {
+fn to_bytes<'a>(s: &'a str) -> &'a [u8] { unsafe { transmute(s) } }
+
+fn range(lo: uint, hi: uint, it: |uint| ) {
     let mut iter = lo;
     while iter < hi {
         it(iter);
@@ -51,9 +58,27 @@ fn make_vgaentry(c: u8, fg: Color, bg: Color) -> u16 {
     return c as u16 | (color << 8);
 }
 
+unsafe fn write(s: &str, x: u16, y: u16) {
+    let bytes : &[u8] = to_bytes(s);
+    let mut ix = x;
+    let mut iy = y;
+    let mut i = 0;
+    for b in core::slice::iter(bytes) {
+        //putchar(ix, iy, bytes[i]);
+        //putchar(ix, iy, 'c' as u8);
+        putchar(ix, iy, *b);
+        if (ix > VGA_WIDTH * 2) {
+            ix = ix - VGA_WIDTH * 2;
+            iy += 1;
+        }
+        i += 1;
+        ix += 2;
+    }
+}
+
 
 #[no_mangle]
 pub unsafe fn main() {
     clear_screen(Green);
-    putchar(0, 8, 99);
+    write("cccccc", 2, 3);
 }
