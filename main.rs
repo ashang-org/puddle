@@ -64,8 +64,6 @@ unsafe fn write(s: &str, x: u16, y: u16) {
     let mut iy = y;
     let mut i = 0;
     for b in core::slice::iter(bytes) {
-        //putchar(ix, iy, bytes[i]);
-        //putchar(ix, iy, 'c' as u8);
         putchar(ix, iy, *b);
         if (ix > VGA_WIDTH * 2) {
             ix = ix - VGA_WIDTH * 2;
@@ -80,5 +78,5 @@ unsafe fn write(s: &str, x: u16, y: u16) {
 #[no_mangle]
 pub unsafe fn main() {
     clear_screen(Green);
-    write("cccccc", 2, 3);
+    write("Hello!aaa", 2, 3);
 }
