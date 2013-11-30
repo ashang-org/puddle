@@ -26,7 +26,7 @@ floppy.img: loader.bin main.bin
 loader.bin: loader.asm
 	$(NASM) -o $@ -f bin $<
 
-main.bin: linker.ld runtime.o main.o
+main.bin: linker.ld runtime.o main.o isr_wrapper.o
 	$(LD) -o $@ -T $^
 
 run: floppy.img

@@ -80,3 +80,7 @@ pub unsafe fn main() {
     clear_screen(Green);
     write("Hello!aaa", 2, 3);
 }
+
+#[no_mangle]
+pub unsafe fn _interrupt_handler() {
+}
