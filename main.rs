@@ -36,13 +36,13 @@ fn range(lo: uint, hi: uint, it: &fn(uint)) {
 
 unsafe fn clear_screen(background: Color) {
     range(0, 80*25, |i| {
-        *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(99, Black, Red);
+        *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(0, Black, background);
                 
     });
 }
 
 unsafe fn putchar(x: u16, y: u16, c: u8) {
-    let idx : u16 = y * VGA_WIDTH + x;
+    let idx : uint =  (y * VGA_WIDTH * 2 + x) as uint;
     *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, Black, Yellow);
 }
 
@@ -54,6 +54,6 @@ fn make_vgaentry(c: u8, fg: Color, bg: Color) -> u16 {
 
 #[no_mangle]
 pub unsafe fn main() {
-    clear_screen(White);
-    putchar(15, 15, 99);
+    clear_screen(Green);
+    putchar(0, 8, 99);
 }
