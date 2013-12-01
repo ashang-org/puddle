@@ -1,3 +1,4 @@
+#[feature(asm)];
 #[allow(ctypes)];
 #[no_std];
 //#[no_core];
@@ -79,6 +80,7 @@ unsafe fn write(s: &str, x: u16, y: u16) {
 
 #[no_mangle]
 pub unsafe fn main() {
+    idt::idt_install();
     clear_screen(Green);
     write("Hello!aaa", 2, 3);
 }

@@ -29,7 +29,7 @@ struct IDTPointer {
 static mut idt: [IDTEntry, ..256] = [IDTEntry {base_lo: 0, sel: 0, zero: 0, flags: 0, base_hi: 0}, ..256];
 
 #[no_mangle]
-static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
+pub static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
 
 
 
@@ -46,22 +46,19 @@ unsafe fn idt_set_gate(num: u8, base: u32, sel: u16, flags: u8)
 
 /* Installs the IDT */
 extern {
-    fn idt_load();
+    fn idt_load(x: *IDTPointer);
 }
 
 #[no_mangle]
-unsafe fn idt_install() {
+pub unsafe fn idt_install() {
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
     idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
     idtp.base = &idt as *[IDTEntry, ..256] as u32;
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
-    asm!("lidt [%0]\n\t\
-         ret"
-         :
-         :"r"(&idtp as *IDTPointer))
+    //asm!("lidt (%0)" : :"p" ())
 
     /* Points the processor's internal register to the new IDT */
-    idt_load();
+    idt_load(&idtp as *IDTPointer);
 }
 		
