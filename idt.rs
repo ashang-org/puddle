@@ -36,8 +36,10 @@ pub static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
 /* Use this function to set an entry in the IDT. A lot simpler
 *  than twiddling with the GDT ;) */
 #[no_mangle]
-unsafe fn idt_set_gate(num: u8, base: u32, sel: u16, flags: u8)
+unsafe fn idt_set_gate(num: u8, f: extern "C" fn(), sel: u16, flags: u8)
 {
+
+    let base = f as u32;
     idt[num].sel = sel;
     idt[num].flags = flags;
     idt[num].base_hi = (base >> 16) as u16;
@@ -51,14 +53,15 @@ extern {
 
 #[no_mangle]
 pub unsafe fn idt_install() {
+    idt_load(&idtp as *IDTPointer);
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
     idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
     idtp.base = &idt as *[IDTEntry, ..256] as u32;
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
+//    idt_set_gate();
     //asm!("lidt (%0)" : :"p" ())
 
     /* Points the processor's internal register to the new IDT */
-    idt_load(&idtp as *IDTPointer);
 }
 		
