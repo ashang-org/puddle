@@ -4,15 +4,17 @@
 #[feature(macro_rules)];
 use super::core::mem;
 /* Defines an IDT entry */
+#[packed]
 struct IDTEntry {
     base_lo: u16,
     sel: u16,        /* Our kernel segment goes here! */
     zero: u8,        /* This will ALWAYS be set to 0! */
     flags: u8,       /* Set using the above table! */
     base_hi: u16
-}
+} 
 
 /* Defines an IDT pointer */
+#[packed]
 struct IDTPointer {
     limit: u16,
     base: u32
@@ -36,7 +38,7 @@ pub static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
 /* Use this function to set an entry in the IDT. A lot simpler
 *  than twiddling with the GDT ;) */
 #[no_mangle]
-unsafe fn idt_set_gate(num: u8, f: extern "C" fn(), sel: u16, flags: u8)
+unsafe fn idt_set_gate(num: u8, f: extern "C" unsafe fn(), sel: u16, flags: u8)
 {
 
     let base = f as u32;
@@ -49,6 +51,7 @@ unsafe fn idt_set_gate(num: u8, f: extern "C" fn(), sel: u16, flags: u8)
 /* Installs the IDT */
 extern {
     fn idt_load(x: *IDTPointer);
+    fn _interrupt_handler_kbd_wrapper ();
 }
 
 #[no_mangle]
@@ -59,9 +62,13 @@ pub unsafe fn idt_install() {
     idtp.base = &idt as *[IDTEntry, ..256] as u32;
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
-//    idt_set_gate();
+    let on_flags: u8 = 0b10001110; // on, ring = 0
+    idt_set_gate(1, _interrupt_handler_kbd_wrapper, 0, on_flags);
     //asm!("lidt (%0)" : :"p" ())
 
     /* Points the processor's internal register to the new IDT */
 }
 		
+#[no_mangle] pub unsafe fn _interrupt_handler_kbd() {
+
+}

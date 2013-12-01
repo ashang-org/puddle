@@ -1,14 +1,13 @@
 use32
-global  _isr_wrapper
+global  _interrupt_handler_kbd_wrapper
 global  idt_load
 align   4
 
-extern _interrupt_handler
-extern idtp
+extern _interrupt_handler_kbd
 
-_isr_wrapper:
+_interrupt_handler_kbd_wrapper: 
     pushad
-    call    _interrupt_handler
+    call    _interrupt_handler_kbd
     popad
     iret
 
