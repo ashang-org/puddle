@@ -1,5 +1,6 @@
 use32
-global   _isr_wrapper
+global  _isr_wrapper
+global  _idt_load
 align   4
 
 extern _interrupt_handler

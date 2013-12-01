@@ -2,11 +2,13 @@
 #[no_std];
 //#[no_core];
 #[feature(macro_rules)];
+
 use core::mem::transmute;
 use core::slice::iter;
 use core::iter::Iterator;
 use core::option::{Some, Option, None};
 mod core;
+mod idt;
 
 static VGA_WIDTH  : u16 = 80;
 static VGA_HEIGHT : u16 = 24;
@@ -83,4 +85,5 @@ pub unsafe fn main() {
 
 #[no_mangle]
 pub unsafe fn _interrupt_handler() {
+    write("Hello!aaa", 3, 3);
 }
