@@ -20,10 +20,9 @@ boot:
     mov bx, 0x7e00  ; read buffer
     int 0x13
     jc error
-    ; load protected mode GDT and a null IDT (we don't need interrupts)
+    ; load protected mode GDT
     cli
     lgdt [gdtr]
-    lidt [idtr]
     ; set protected mode bit of cr0
     mov eax, cr0
     or eax, 1
@@ -67,10 +66,6 @@ protected_mode:
 gdtr:
     dw (gdt_end - gdt) + 1  ; size
     dd gdt                  ; offset
-
-idtr:
-    dw 0
-    dd 0
 
 gdt:
     ; null entry
