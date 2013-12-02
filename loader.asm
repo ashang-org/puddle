@@ -21,7 +21,7 @@ boot:
     int 0x13
     jc error
     ; load protected mode GDT
-    cli
+    cli             ; turn off interrupts
     lgdt [gdtr]
     ; set protected mode bit of cr0
     mov eax, cr0

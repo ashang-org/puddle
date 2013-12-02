@@ -57,19 +57,26 @@ extern {
 
 #[no_mangle]
 pub unsafe fn idt_install() {
-    idt_load(&idtp as *IDTPointer);
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
     idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
     idtp.base = &idt as *[IDTEntry, ..256] as u32;
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
-    let on_flags: u8 = 0b10001110; // on, ring = 0
-    idt_set_gate(1, _interrupt_handler_kbd_wrapper, 0, on_flags);
-    //asm!("lidt (%0)" : :"p" ())
+    //let on_flags: u8 = 0b10001110; // on, ring = 0
+    let flags = 0x8E;
+    let mut i = 0;
+    while i < 256 {
+        idt_set_gate(i, _interrupt_handler_kbd_wrapper, 0x08, flags);
+        i += 1;
+    }
+    asm!("lidt ($0)" :: "r" (idtp));
+    asm!("sti");
 
     /* Points the processor's internal register to the new IDT */
 }
 		
-#[no_mangle] pub unsafe fn _interrupt_handler_kbd() {
+#[no_mangle]
+pub unsafe fn _interrupt_handler_kbd() {
     stdio::write("Hi!", 4, 6);
+    loop {}
 }

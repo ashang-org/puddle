@@ -1,5 +1,6 @@
 #[allow(ctypes)];
 #[no_std];
+#[feature(asm)];
 //#[no_core];
 #[feature(macro_rules)];
 
@@ -14,5 +15,9 @@ pub unsafe fn main() {
     idt::idt_install();
     stdio::clear_screen(stdio::Green);
     stdio::write("Hello!aaa", 2, 3);
+    let mut i = 0;
+    while true {
+        i += 1;
+    }
 }
 

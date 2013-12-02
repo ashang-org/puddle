@@ -11,6 +11,3 @@ _interrupt_handler_kbd_wrapper:
     popad
     iret
 
-idt_load:
-    lidt [eax]
-    ret
