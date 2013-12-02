@@ -20,6 +20,8 @@ start:
     mov ecx, 80*25*2
     mov al, 1
     rep stosb
+    ; turn interrupts on
+    sti
     ; jump into rust
     call main
     jmp $
