@@ -3,6 +3,7 @@
 //#[no_core];
 #[feature(macro_rules)];
 use super::core::mem;
+use stdio;
 /* Defines an IDT entry */
 #[packed]
 struct IDTEntry {
@@ -70,5 +71,5 @@ pub unsafe fn idt_install() {
 }
 		
 #[no_mangle] pub unsafe fn _interrupt_handler_kbd() {
-
+    stdio::write("Hi!", 4, 6);
 }
