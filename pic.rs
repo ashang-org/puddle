@@ -1,11 +1,11 @@
 use utils::{inb, outb, io_wait};
 
-static PIC1		:u8 = 0x20;		/* IO base address for master PIC */
-static PIC2		:u8 = 0xA0;		/* IO base address for slave PIC */
-static PIC1_COMMAND	:u8 = PIC1;
-static PIC1_DATA	:u8 = PIC1 + 1;
-static PIC2_COMMAND	:u8 = PIC2;
-static PIC2_DATA	:u8 = PIC2 + 1;
+static PIC1		:u16 = 0x20;		/* IO base address for master PIC */
+static PIC2		:u16 = 0xA0;		/* IO base address for slave PIC */
+static PIC1_COMMAND	:u16 = PIC1;
+static PIC1_DATA	:u16 = PIC1 + 1;
+static PIC2_COMMAND	:u16 = PIC2;
+static PIC2_DATA	:u16 = PIC2 + 1;
 
 static ICW1_ICW4	:u8 = 0x01;		/* ICW4 (not) needed */
 static ICW1_SINGLE	:u8 = 0x02;		/* Single (cascade) mode */
@@ -26,7 +26,7 @@ arguments:
 		vectors on the master become offset1..offset1+7
 	offset2 - same for slave PIC: offset2..offset2+7
 */
-pub fn PIC_remap(offset1: int, offset2: int)
+pub unsafe fn PIC_remap(offset1: u8, offset2: u8)
 {
     
     let a1 = inb(PIC1_DATA);           // save masks

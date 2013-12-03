@@ -8,6 +8,8 @@
 mod core;
 pub mod stdio;
 pub mod idt;
+pub mod utils;
+pub mod pic;
 extern {
     fn run_interrupt ();
     fn test1 ();
