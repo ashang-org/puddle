@@ -15,7 +15,7 @@ extern {
 
 #[no_mangle]
 pub unsafe fn main() {
-    idt::idt_install();
+    //idt::idt_install();
     stdio::clear_screen(stdio::Green);
     test1();
     run_interrupt();

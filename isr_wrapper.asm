@@ -15,7 +15,11 @@ _interrupt_handler_kbd_wrapper:
 
 
 run_interrupt:
-   int 49
+   int 1
+   int 1
+   int 1
+   int 1
+   int 1
    ret
 
 int_handler:
@@ -23,7 +27,7 @@ int_handler:
    mov ax, 0x08
    mov gs, ax
    mov dword [gs:0xB8000],'o ^ '
-   call    _interrupt_handler_kbd 
+   call  _interrupt_handler_kbd 
    popad
    iret
 
@@ -36,11 +40,20 @@ idtr:
 
 test1:
    lidt [idtr]
+
    mov eax,int_handler
    mov [idt+49*8],ax
    mov word [idt+49*8+2],0x08
    mov word [idt+49*8+4],0x8E00
    shr eax,16
    mov [idt+49*8+6],ax
+
+   mov eax,int_handler
+   mov [idt+1*8],ax
+   mov word [idt+1*8+2],0x08
+   mov word [idt+1*8+4],0x8E00
+   shr eax,16
+   mov [idt+1*8+6],ax
+
    ret
 
