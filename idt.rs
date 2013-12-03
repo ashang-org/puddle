@@ -53,6 +53,7 @@ unsafe fn idt_set_gate(num: u8, f: extern "C" unsafe fn(), sel: u16, flags: u8)
 extern {
     fn idt_load(x: *IDTPointer);
     fn _interrupt_handler_kbd_wrapper ();
+    fn int_handler ();
 }
 
 pub unsafe fn outb(port: u16, value: u8)
@@ -71,7 +72,7 @@ pub unsafe fn idt_install() {
     let flags = 0x8E;
     let mut i = 0;
     while i < 256 {
-        idt_set_gate(i, _interrupt_handler_kbd_wrapper, 0x08, flags);
+        idt_set_gate(i, int_handler, 0x08, flags);
         i += 1;
     }
     outb(0x21,0xfd);
