@@ -85,6 +85,6 @@ pub unsafe fn idt_install() {
 		
 #[no_mangle]
 pub unsafe fn _interrupt_handler_kbd() {
-    stdio::write("Hi!", 4, 6);
+    stdio::write(4, 6, "Hi!");
     loop {}
 }

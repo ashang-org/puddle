@@ -14,7 +14,7 @@ pub mod idt;
 pub unsafe fn main() {
     idt::idt_install();
     stdio::clear_screen(stdio::Green);
-    stdio::write("Hello!aaa", 2, 3);
+    stdio::write(2, 3, "Hello! :)");
     let mut i: u32 = 0;
     let mut c: u8 = 65; // 'A'
     let N: u32 = 80000000;
