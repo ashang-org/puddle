@@ -7,6 +7,9 @@ use super::core::option::{Some, None};
 static VGA_WIDTH  : u16 = 80;
 static VGA_HEIGHT : u16 = 24;
 
+static mut curr_x: u16 = 0;
+static mut curr_y: u16 = 10;
+
 pub enum Color {
     Black       = 0,
     Blue        = 1,
@@ -41,8 +44,17 @@ pub unsafe fn clear_screen(background: Color) {
     });
 }
 
+pub unsafe fn putc(c: u8) {
+    putchar(curr_x, curr_y, c);
+    curr_x += 1;
+    if (curr_x > VGA_WIDTH) {
+        curr_x -= VGA_WIDTH;
+        curr_y += 1;
+    }
+}
+
 pub unsafe fn putchar(x: u16, y: u16, c: u8) {
-    let idx : uint =  (y * VGA_WIDTH * 2 + x) as uint;
+    let idx : uint =  (y * VGA_WIDTH * 2 + x * 2) as uint;
     *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, Black, Yellow);
 }
 
@@ -61,6 +73,6 @@ pub unsafe fn write(x: u16, y: u16, s: &str) {
             ix = ix - VGA_WIDTH * 2;
             iy += 1;
         }
-        ix += 2;
+        ix += 1;
     }
 }

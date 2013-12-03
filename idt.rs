@@ -83,11 +83,11 @@ static mut char: u8 = 0;
 pub unsafe fn _interrupt_handler_kbd() {
     let mut i: uint = 1;
     let N: uint = 80000000;
-    stdio::write(0, 6, "Int:");
-    stdio::putchar(10 + (char as u16), 6, char + 65);
+    stdio::write(0, 6, "Int: ");
+    stdio::putchar(5 + (char as u16), 6, char + 65);
     while i % N != 0 {
         i += 1;
     }
     let x = (((i % N + 1) * 0) as u8);
-    char += x + 2;
+    char += x + 1;
 }
