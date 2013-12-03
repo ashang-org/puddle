@@ -7,7 +7,7 @@ extern _interrupt_handler_kbd
 
 _interrupt_handler_kbd_wrapper: 
     pushad
-    call    _interrupt_handler_kbd
+    ;call    _interrupt_handler_kbd 
     popad
     iret
 

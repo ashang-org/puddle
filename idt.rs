@@ -55,6 +55,11 @@ extern {
     fn _interrupt_handler_kbd_wrapper ();
 }
 
+pub unsafe fn outb(port: u16, value: u8)
+{
+    asm!("outb %al, %dx" :: "{dx}" (port), "{al}" (value) :: "volatile" );
+}
+
 #[no_mangle]
 pub unsafe fn idt_install() {
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
@@ -69,6 +74,8 @@ pub unsafe fn idt_install() {
         idt_set_gate(i, _interrupt_handler_kbd_wrapper, 0x08, flags);
         i += 1;
     }
+    outb(0x21,0xfd);
+    outb(0xa1,0xff);
     asm!("lidt ($0)" :: "r" (idtp));
     asm!("sti");
 
