@@ -46,7 +46,7 @@ pub unsafe fn clear_screen(background: Color) {
     });
 }
 
-unsafe fn putchar(x: u16, y: u16, c: u8) {
+pub unsafe fn putchar(x: u16, y: u16, c: u8) {
     let idx : uint =  (y * VGA_WIDTH * 2 + x) as uint;
     *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, Black, Yellow);
 }
