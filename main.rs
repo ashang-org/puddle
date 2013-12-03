@@ -18,7 +18,7 @@ pub unsafe fn main() {
     let mut i: u32 = 0;
     let mut c: u8 = 65; // 'A'
     let N: u32 = 80000000;
-    while true {
+    loop {
         i += 1;
         if (i % N == 0) {
             c += 1;

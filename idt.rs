@@ -1,8 +1,3 @@
-#[allow(ctypes)];
-#[no_std];
-//#[no_core];
-#[feature(macro_rules)];
-use super::core::mem;
 use stdio;
 /* Defines an IDT entry */
 #[packed]
@@ -70,9 +65,9 @@ pub unsafe fn idt_install() {
     /* Add any new ISRs to the IDT here using idt_set_gate */
     //let on_flags: u8 = 0b10001110; // on, ring = 0
     let flags = 0x8E;
-    let mut i = 0;
+    let mut i: uint = 0;
     while i < 256 {
-        idt_set_gate(i, int_handler, 0x08, flags);
+        idt_set_gate(i as u8, int_handler, 0x08, flags);
         i += 1;
     }
     outb(0x21,0xfd);

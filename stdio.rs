@@ -1,11 +1,7 @@
-#[allow(ctypes)];
-#[no_std];
-#[feature(macro_rules)];
-
 use super::core::str::as_bytes;
 use super::core::slice::iter;
 use super::core::iter::Iterator;
-use super::core::option::{Some, Option, None};
+use super::core::option::{Some, None};
 
 
 static VGA_WIDTH  : u16 = 80;
@@ -59,14 +55,12 @@ pub unsafe fn write(x: u16, y: u16, s: &str) {
     let bytes : &[u8] = as_bytes(s);
     let mut ix = x;
     let mut iy = y;
-    let mut i = 0;
     for b in super::core::slice::iter(bytes) {
         putchar(ix, iy, *b);
         if (ix > VGA_WIDTH * 2) {
             ix = ix - VGA_WIDTH * 2;
             iy += 1;
         }
-        i += 1;
         ix += 2;
     }
 }
