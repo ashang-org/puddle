@@ -15,11 +15,16 @@ _interrupt_handler_kbd_wrapper:
 
 
 run_interrupt:
-   int 1
-   int 1
-   int 1
-   int 1
-   int 1
+   int 49
+   int 49
+   int 49
+   int 49
+   int 49
+   int 49
+   int 49
+   int 49
+   int 49
+   int 49
    ret
 
 int_handler:

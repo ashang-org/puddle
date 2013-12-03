@@ -70,9 +70,9 @@ pub unsafe fn idt_install() {
     //    i += 1;
     //}
     PIC_remap(0x20, 0x28);
-    outb(0x21,0xfd);
+    outb(0x21,0xfd); // Keyboard interrupts only
     outb(0xa1,0xff);
-    //asm!("sti");
+    asm!("sti");
     //asm!("lidt ($0)" :: "r" (idtp));
 
     /* Points the processor's internal register to the new IDT */
