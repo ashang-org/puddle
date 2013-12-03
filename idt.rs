@@ -1,4 +1,8 @@
 use stdio;
+use utils;
+use pic::PIC_remap;
+
+mod pic;
 /* Defines an IDT entry */
 #[packed]
 struct IDTEntry {
@@ -51,29 +55,25 @@ extern {
     fn test1 ();
 }
 
-pub unsafe fn outb(port: u16, value: u8)
-{
-    asm!("outb %al, %dx" :: "{dx}" (port), "{al}" (value) :: "volatile" );
-}
-
 #[no_mangle]
 pub unsafe fn idt_install() {
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
-    idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
-    idtp.base = &idt as *[IDTEntry, ..256] as u32;
+    //idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
+    //idtp.base = &idt as *[IDTEntry, ..256] as u32;
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
     //let on_flags: u8 = 0b10001110; // on, ring = 0
-    let flags = 0x8E;
-    let mut i: uint = 0;
-    while i < 256 {
-        idt_set_gate(i as u8, _interrupt_handler_kbd_wrapper, 0x08, flags);
-        i += 1;
-    }
+    //let flags = 0x8E;
+    //let mut i: uint = 0;
+    //while i < 256 {
+    //    idt_set_gate(i as u8, _interrupt_handler_kbd_wrapper, 0x08, flags);
+    //    i += 1;
+    //}
+    PIC_remap(0x20, 0x28);
     outb(0x21,0xfd);
     outb(0xa1,0xff);
-    asm!("lidt ($0)" :: "r" (idtp));
-    asm!("sti");
+    //asm!("sti");
+    //asm!("lidt ($0)" :: "r" (idtp));
 
     /* Points the processor's internal register to the new IDT */
 }
@@ -90,5 +90,4 @@ pub unsafe fn _interrupt_handler_kbd() {
     }
     let x = (((i % N + 1) * 0) as u8);
     char += x + 2;
-    //char += 2;
 }
