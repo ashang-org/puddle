@@ -1,5 +1,6 @@
 use16
 
+global test1                   
 org 0x7c00
 
 boot:
@@ -84,9 +85,11 @@ gdt:
     db 0b10010010   ; access byte - data
     db 0x4f         ; flags/(limit 16:19). flag is set to 32 bit protected mode
     db 0x00         ; base 24:31
+
 gdt_end:
 
 times 510-($-$$) db 0
 db 0x55
 db 0xaa
+
 

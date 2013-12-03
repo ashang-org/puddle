@@ -1,6 +1,8 @@
 use32
 global  _interrupt_handler_kbd_wrapper
 global  int_handler
+global test1                    
+global  run_interrupt
 align   4
 
 extern _interrupt_handler_kbd
@@ -11,8 +13,34 @@ _interrupt_handler_kbd_wrapper:
     popad
     iret
 
+
+run_interrupt:
+   int 49
+   ret
+
 int_handler:
+   pushad
    mov ax, 0x08
    mov gs, ax
-   mov dword [gs:0xB8000],') : '
-   hlt
+   mov dword [gs:0xB8000],'o ^ '
+   call    _interrupt_handler_kbd 
+   popad
+   iret
+
+idt:
+   resd 50*2
+
+idtr:
+   dw (50*8)-1
+   dd idt
+
+test1:
+   lidt [idtr]
+   mov eax,int_handler
+   mov [idt+49*8],ax
+   mov word [idt+49*8+2],0x08
+   mov word [idt+49*8+4],0x8E00
+   shr eax,16
+   mov [idt+49*8+6],ax
+   ret
+
