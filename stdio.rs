@@ -2,7 +2,7 @@
 #[no_std];
 #[feature(macro_rules)];
 
-use super::core::mem::transmute;
+use super::core::str::as_bytes;
 use super::core::slice::iter;
 use super::core::iter::Iterator;
 use super::core::option::{Some, Option, None};
@@ -29,7 +29,6 @@ pub enum Color {
     Yellow      = 14,
     White       = 15,
 }
-fn to_bytes<'a>(s: &'a str) -> &'a [u8] { unsafe { transmute(s) } }
 
 fn range(lo: uint, hi: uint, it: |uint| ) {
     let mut iter = lo;
@@ -57,7 +56,7 @@ fn make_vgaentry(c: u8, fg: Color, bg: Color) -> u16 {
 }
 
 pub unsafe fn write(s: &str, x: u16, y: u16) {
-    let bytes : &[u8] = to_bytes(s);
+    let bytes : &[u8] = as_bytes(s);
     let mut ix = x;
     let mut iy = y;
     let mut i = 0;
