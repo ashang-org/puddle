@@ -1,5 +1,1 @@
-*.img
-*.swp
-*.bin
-*.o
-core
+build

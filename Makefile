@@ -3,8 +3,13 @@ LD=i386-elf-ld
 RUSTC=rustc
 NASM=nasm
 QEMU=qemu-system-i386
+BUILDDIR=./build
+OBJDIR=$(BUILDDIR)/obj
 
-all: floppy.img
+
+OBJS := $(OBJDIR)/runtime.asm.o $(OBJDIR)/main.o $(OBJDIR)/isr_wrapper.asm.o
+
+all: $(BUILDDIR)/floppy.img
 
 .SUFFIXES:
 
@@ -12,25 +17,27 @@ all: floppy.img
 
 .PHONY: clean run
 
-.rs.o:
-	$(RUSTC) -O --target i386-intel-linux --lib -o $@ -c $<
-
-.asm.o:
+$(OBJDIR)/%.asm.o: src/%.asm
+	mkdir -p $(OBJDIR)
 	$(NASM) -f elf32 -o $@ $<
 
-main.rs: idt.rs
+$(OBJDIR)/main.o: src/main.rs
+	mkdir -p $(OBJDIR)
+	$(RUSTC) -O --target i386-intel-linux --lib -o $@ -c $<
 
-floppy.img: loader.bin main.bin
-	cat $^ > $@
-
-loader.bin: loader.asm
+$(BUILDDIR)/loader.bin: src/loader.asm
+	mkdir -p $(BUILDDIR)
 	$(NASM) -o $@ -f bin $<
 
-main.bin: linker.ld runtime.o main.o isr_wrapper.o
+$(BUILDDIR)/main.bin: src/linker.ld $(OBJS)
+	mkdir -p $(BUILDDIR)
 	$(LD) -o $@ -T $^
 
-run: floppy.img
+$(BUILDDIR)/floppy.img: $(BUILDDIR)/loader.bin $(BUILDDIR)/main.bin
+	cat $^ > $@
+
+run: $(BUILDDIR)/floppy.img
 	$(QEMU) -fda $<
 
 clean:
-	rm -f *.bin *.o *.img
+	-rm -rf $(BUILDDIR)
