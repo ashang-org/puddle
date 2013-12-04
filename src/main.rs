@@ -35,4 +35,3 @@ pub unsafe fn main() {
         }
     }
 }
-

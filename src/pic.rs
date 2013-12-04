@@ -1,4 +1,4 @@
-use utils::{inb, outb, io_wait};
+use utils::{outb};
 
 static PIC1		:u16 = 0x20;		/* IO base address for master PIC */
 static PIC2		:u16 = 0xA0;		/* IO base address for slave PIC */

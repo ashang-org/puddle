@@ -37,25 +37,34 @@ fn range(lo: uint, hi: uint, it: |uint| ) {
     }
 }
 
-pub unsafe fn clear_screen(background: Color) {
-    range(0, 80*25, |i| {
-        *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(0, Black, background);
-                
-    });
-}
+pub fn clear_screen(background: Color) {
+    unsafe {
+        range(0, 80*25, |i| {
+            *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(0, Black, background);
 
-pub unsafe fn putc(c: u8) {
-    putchar(curr_x, curr_y, c);
-    curr_x += 1;
-    if (curr_x > VGA_WIDTH) {
-        curr_x -= VGA_WIDTH;
-        curr_y += 1;
+        });
     }
 }
 
-pub unsafe fn putchar(x: u16, y: u16, c: u8) {
+pub fn putc(c: u8) {
+    unsafe {
+        putchar(curr_x, curr_y, c);
+        curr_x += 1;
+        if (curr_x > VGA_WIDTH) {
+            curr_x -= VGA_WIDTH;
+            curr_y += 1;
+        }
+    }
+}
+
+pub fn putchar(x: u16, y: u16, c: u8) {
+    if (x >= VGA_WIDTH || y >= VGA_HEIGHT) {
+        return;
+    }
     let idx : uint =  (y * VGA_WIDTH * 2 + x * 2) as uint;
-    *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, Black, Yellow);
+    unsafe {
+        *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, Black, Yellow);
+    }
 }
 
 fn make_vgaentry(c: u8, fg: Color, bg: Color) -> u16 {
@@ -63,7 +72,7 @@ fn make_vgaentry(c: u8, fg: Color, bg: Color) -> u16 {
     return c as u16 | (color << 8);
 }
 
-pub unsafe fn write(x: u16, y: u16, s: &str) {
+pub fn write(x: u16, y: u16, s: &str) {
     let bytes : &[u8] = as_bytes(s);
     let mut ix = x;
     let mut iy = y;
