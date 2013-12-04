@@ -5,6 +5,7 @@
 #[feature(macro_rules)];
 
 
+#[path = "rust-core/core/mod.rs"]
 mod core;
 pub mod stdio;
 pub mod idt;
