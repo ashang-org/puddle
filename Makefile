@@ -18,7 +18,7 @@ all: floppy.img
 .asm.o:
 	$(NASM) -f elf32 -o $@ $<
 
-main.rs: zero.rs idt.rs
+main.rs: idt.rs
 
 floppy.img: loader.bin main.bin
 	cat $^ > $@
