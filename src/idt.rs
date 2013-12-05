@@ -1,5 +1,5 @@
 use stdio;
-use utils::outb;
+use utils::{outb, inb};
 use pic::PIC_remap;
 
 mod pic;
@@ -78,16 +78,18 @@ pub unsafe fn idt_install() {
     /* Points the processor's internal register to the new IDT */
 }
 		
-static mut char: u8 = 0;
+static mut pos: u8 = 0;
 #[no_mangle]
 pub unsafe fn _interrupt_handler_kbd() {
     let mut i: uint = 1;
     let N: uint = 80000000;
     stdio::write(0, 6, "Int: ");
-    stdio::putchar(5 + (char as u16), 6, char + 65);
     while i % N != 0 {
         i += 1;
     }
     let x = (((i % N + 1) * 0) as u8);
-    char += x + 1;
+    pos += x + 1;
+    outb(0x20, 0x20);
+    let key = inb(0x60);
+    stdio::putchar(5 + (pos as u16), 6, key);
 }
