@@ -19,6 +19,8 @@ static ICW4_BUF_SLAVE	:u8 = 0x08;		/* Buffered mode/slave */
 static ICW4_BUF_MASTER	:u8 = 0x0C;		/* Buffered mode/master */
 static ICW4_SFNM	:u8 = 0x10;		/* Special fully nested (not) */
 
+static REMAP_BASE       :u8 = 0x20;
+
 
 /*
 arguments:
@@ -26,12 +28,14 @@ arguments:
 		vectors on the master become offset1..offset1+7
 	offset2 - same for slave PIC: offset2..offset2+7
 */
-pub unsafe fn PIC_remap(offset1: u8, offset2: u8)
+
+
+pub unsafe fn PIC_remap()
 {
     outb(PIC1_COMMAND, ICW1_INIT+ICW1_ICW4);  // starts the initialization sequence (in cascade mode)
     outb(PIC2_COMMAND, ICW1_INIT+ICW1_ICW4);
-    outb(PIC1_DATA, offset1);                 // ICW2: Master PIC vector offset
-    outb(PIC2_DATA, offset2);                 // ICW2: Slave PIC vector offset
+    outb(PIC1_DATA, REMAP_BASE);                 // ICW2: Master PIC vector offset
+    outb(PIC2_DATA, REMAP_BASE + 8);                 // ICW2: Slave PIC vector offset
     outb(PIC1_DATA, 4);                       // ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
     outb(PIC2_DATA, 2);                       // ICW3: tell Slave PIC its cascade identity (0000 0010)
     outb(PIC1_DATA, ICW4_8086);
