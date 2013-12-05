@@ -78,18 +78,3 @@ pub unsafe fn idt_install() {
     /* Points the processor's internal register to the new IDT */
 }
 		
-static mut pos: u8 = 0;
-#[no_mangle]
-pub unsafe fn _interrupt_handler_kbd() {
-    let mut i: uint = 1;
-    let N: uint = 80000000;
-    stdio::write(0, 6, "Int: ");
-    while i % N != 0 {
-        i += 1;
-    }
-    let x = (((i % N + 1) * 0) as u8);
-    pos += x + 1;
-    outb(0x20, 0x20);
-    let key = inb(0x60);
-    stdio::putchar(5 + (pos as u16), 6, key);
-}

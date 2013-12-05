@@ -8,6 +8,7 @@
 #[path = "rust-core/core/mod.rs"]
 mod core;
 pub mod stdio;
+pub mod kbd;
 pub mod idt;
 pub mod utils;
 pub mod pic;
