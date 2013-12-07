@@ -29,9 +29,13 @@ $(BUILDDIR)/loader.bin: src/loader.asm
 	mkdir -p $(BUILDDIR)
 	$(NASM) -o $@ -f bin $<
 
-$(BUILDDIR)/main.bin: src/linker.ld $(OBJS)
+$(BUILDDIR)/main.elf: src/linker.ld $(OBJS)
 	mkdir -p $(BUILDDIR)
 	$(LD) -o $@ -T $^
+
+$(BUILDDIR)/main.bin: $(BUILDDIR)/main.elf
+	mkdir -p $(BUILDDIR)
+	objcopy -O binary $< $@
 
 $(BUILDDIR)/floppy.img: $(BUILDDIR)/loader.bin $(BUILDDIR)/main.bin
 	cat $^ > $@
