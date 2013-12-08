@@ -22,7 +22,6 @@ int_handler:
    pushad
    mov ax, 0x08
    mov gs, ax
-   mov dword [gs:0xB8000],': ) '
    call  _interrupt_handler_kbd 
    popad
    iret

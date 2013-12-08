@@ -8,7 +8,7 @@ static VGA_WIDTH  : u16 = 80;
 static VGA_HEIGHT : u16 = 24;
 
 static mut curr_x: u16 = 0;
-static mut curr_y: u16 = 10;
+static mut curr_y: u16 = 0;
 
 pub enum Color {
     Black       = 0,
