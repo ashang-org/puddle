@@ -10,6 +10,9 @@ static VGA_HEIGHT : u16 = 24;
 static mut curr_x: u16 = 0;
 static mut curr_y: u16 = 0;
 
+static mut fg_color: Color = Green;
+static mut bg_color: Color = Black;
+
 pub enum Color {
     Black       = 0,
     Blue        = 1,
@@ -40,9 +43,21 @@ fn range(lo: uint, hi: uint, it: |uint| ) {
 pub fn clear_screen(background: Color) {
     unsafe {
         range(0, 80*25, |i| {
-            *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(0, Black, background);
+            *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(0, fg_color, bg_color);
 
         });
+    }
+}
+
+pub fn backspace() {
+    unsafe {
+        if (curr_x == 0) {
+            curr_y -= 1;
+            curr_x = VGA_WIDTH - 1;
+        } else {
+            curr_x -= 1;
+        }
+        putchar(curr_x, curr_y, 0);
     }
 }
 
@@ -57,13 +72,20 @@ pub fn putc(c: u8) {
     }
 }
 
+pub fn newline() {
+    unsafe {
+        curr_x = 0;
+        curr_y += 1;
+    }
+}
+
 pub fn putchar(x: u16, y: u16, c: u8) {
     if (x >= VGA_WIDTH || y >= VGA_HEIGHT) {
         return;
     }
     let idx : uint =  (y * VGA_WIDTH * 2 + x * 2) as uint;
     unsafe {
-        *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, Black, Yellow);
+        *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, fg_color, bg_color);
     }
 }
 

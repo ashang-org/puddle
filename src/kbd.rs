@@ -18,6 +18,8 @@ pub unsafe fn _interrupt_handler_kbd() {
     change_state(scancode);
     match get_char(scancode) {
         None => {},
+        Some(8) => stdio::backspace(),
+        Some(10) => stdio::newline(),
         Some(c) => stdio::putc(c)
     };
     outb(0x20, 0x20);
@@ -41,7 +43,10 @@ pub fn change_state(scancode: u8) {
 }
 
 pub fn get_char(scancode: u8) -> Option<u8> {
-    if (scancode > SCAN_CODE_MAPPING.len() as u8) {
+    if (scancode >= SCAN_CODE_MAPPING.len() as u8
+        || SCAN_CODE_MAPPING[scancode] == ('?' as u8)
+        || scancode < 2
+        || scancode > 63) {
         return None;
     } 
     unsafe {
