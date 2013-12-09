@@ -36,9 +36,3 @@ memcmp:
 
 memcpy:
     jmp $
-
-malloc:
-    jmp $
-
-free:
-    jmp $
