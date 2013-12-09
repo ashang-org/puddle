@@ -40,7 +40,7 @@ fn range(lo: uint, hi: uint, it: |uint| ) {
     }
 }
 
-pub fn clear_screen(background: Color) {
+pub fn clear_screen() {
     unsafe {
         range(0, 80*25, |i| {
             *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(0, fg_color, bg_color);

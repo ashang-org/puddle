@@ -1,4 +1,3 @@
-use stdio;
 pub unsafe fn outb(port: u16, value: u8) {
     asm!("outb %al, %dx"
          :

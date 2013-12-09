@@ -1,5 +1,4 @@
-use stdio;
-use utils::{outb, inb};
+use utils::outb;
 use pic::PIC_remap;
 
 mod pic;

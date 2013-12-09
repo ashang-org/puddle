@@ -1,5 +1,4 @@
 use utils::{outb, inb};
-use core::slice;
 use core::option::{Option, Some, None};
 use core::container::Container;
 use stdio;
