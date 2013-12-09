@@ -13,10 +13,6 @@ pub mod idt;
 pub mod utils;
 pub mod pic;
 pub mod serial;
-extern {
-    fn run_interrupt ();
-    fn test1 ();
-}
 
 #[no_mangle]
 pub unsafe fn main() {
@@ -24,6 +20,4 @@ pub unsafe fn main() {
     idt::idt_install();
     stdio::clear_screen();
     serial::write("Starting...\n");
-    test1();
-    run_interrupt();
 }

@@ -68,6 +68,8 @@ pub unsafe fn idt_install() {
     //    idt_set_gate(i as u8, _interrupt_handler_kbd_wrapper, 0x08, flags);
     //    i += 1;
     //}
+
+    test1();
     PIC_remap();
     outb(0x21,0xfd); // Keyboard interrupts only
     outb(0xa1,0xff);
