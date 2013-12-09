@@ -15,9 +15,3 @@ pub unsafe fn inb(port: u16) -> u8 {
          : "volatile" );
     return ret;
 }
-
-pub unsafe fn io_wait() {
-    asm!("jmp 1f\n\t
-          1:jmp 2f\n\t
-          2:" );
-}

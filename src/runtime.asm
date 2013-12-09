@@ -28,11 +28,3 @@ _GLOBAL_OFFSET_TABLE_:
 
 __morestack:
 
-abort:
-    jmp $
-
-memcmp:
-    jmp $
-
-memcpy:
-    jmp $
