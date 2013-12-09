@@ -23,7 +23,7 @@ $(OBJDIR)/%.asm.o: src/%.asm
 
 $(OBJDIR)/main.o: src/main.rs
 	mkdir -p $(OBJDIR)
-	$(RUSTC) -O --target i386-intel-linux --lib -o $@ -c $<
+	$(RUSTC) -O --target i386-intel-linux --cfg libc --lib -o $@ -c $<
 
 $(BUILDDIR)/loader.bin: src/loader.asm
 	mkdir -p $(BUILDDIR)
