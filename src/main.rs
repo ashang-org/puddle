@@ -23,6 +23,7 @@ pub unsafe fn main() {
     serial::init();
     idt::idt_install();
     stdio::clear_screen();
+    serial::write("Starting...\n");
     test1();
     run_interrupt();
 }

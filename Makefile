@@ -41,7 +41,7 @@ $(BUILDDIR)/floppy.img: $(BUILDDIR)/loader.bin $(BUILDDIR)/main.bin
 	cat $^ > $@
 
 run: $(BUILDDIR)/floppy.img
-	$(QEMU) -fda $<
+	$(QEMU) -serial stdio -fda $<
 
 clean:
 	-rm -rf $(BUILDDIR)
