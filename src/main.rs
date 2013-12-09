@@ -1,18 +1,17 @@
 #[allow(ctypes)];
 #[no_std];
 #[feature(asm)];
-//#[no_core];
 #[feature(macro_rules)];
-
 
 #[path = "rust-core/core/mod.rs"]
 mod core;
-pub mod stdio;
-pub mod kbd;
 pub mod idt;
-pub mod utils;
+pub mod kbd;
+pub mod mem;
 pub mod pic;
 pub mod serial;
+pub mod stdio;
+pub mod utils;
 
 #[no_mangle]
 pub unsafe fn main() {
@@ -21,3 +20,4 @@ pub unsafe fn main() {
     stdio::clear_screen();
     serial::write("Starting...\n");
 }
+
