@@ -4,6 +4,8 @@ use super::core::iter::Iterator;
 use super::core::option::{Some, None};
 
 
+static VGA_ADDRESS: uint = 0xb8000;
+
 static VGA_WIDTH  : u16 = 80;
 static VGA_HEIGHT : u16 = 24;
 
@@ -43,7 +45,7 @@ fn range(lo: uint, hi: uint, it: |uint| ) {
 pub fn clear_screen() {
     unsafe {
         range(0, 80*25, |i| {
-            *((0xb8000 + i * 2) as *mut u16) = make_vgaentry(0, fg_color, bg_color);
+            *((VGA_ADDRESS + i * 2) as *mut u16) = make_vgaentry(0, fg_color, bg_color);
 
         });
     }
@@ -85,7 +87,7 @@ pub fn putchar(x: u16, y: u16, c: u8) {
     }
     let idx : uint =  (y * VGA_WIDTH * 2 + x * 2) as uint;
     unsafe {
-        *((0xb8000 + idx) as *mut u16) = make_vgaentry(c, fg_color, bg_color);
+        *((VGA_ADDRESS + idx) as *mut u16) = make_vgaentry(c, fg_color, bg_color);
     }
 }
 
