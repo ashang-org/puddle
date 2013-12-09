@@ -5,9 +5,9 @@ use stdio;
 
 static mut shifted: bool = false;
 
-static SCAN_CODE_MAPPING: &'static [u8] = bytes!("\
+pub static SCAN_CODE_MAPPING: &'static [u8] = bytes!("\
 \x00\x1B1234567890-=\x08\tqwertyuiop[]\n?asdfghjkl;'`?\\zxcvbnm,./?*? ?????????????789-456+1230.?????");
-static SCAN_CODE_MAPPING_SHIFTED: &'static [u8] = bytes!("\
+pub static SCAN_CODE_MAPPING_SHIFTED: &'static [u8] = bytes!("\
 \x00\x1B!@#$%^&*()_+\x08\tQWERTYUIOP{}\n?ASDFGHJKL:\"~?|ZXCVBNM<>??*? ?????????????789-456+1230.?????");
 
 

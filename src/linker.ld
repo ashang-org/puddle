@@ -7,10 +7,6 @@ SECTIONS {
     *(.text)
   }
 
-  .data : {
-    *(.data .rodata)
-  }
-
   .bss : {
     *(.bss*);
   }
