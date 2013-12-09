@@ -43,5 +43,8 @@ $(BUILDDIR)/floppy.img: $(BUILDDIR)/loader.bin $(BUILDDIR)/main.bin
 run: $(BUILDDIR)/floppy.img
 	$(QEMU) -serial stdio -fda $<
 
+debug: $(BUILDDIR)/floppy.img
+	$(QEMU) -monitor stdio -fda $<
+
 clean:
 	-rm -rf $(BUILDDIR)
