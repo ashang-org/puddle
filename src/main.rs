@@ -12,6 +12,7 @@ pub mod kbd;
 pub mod idt;
 pub mod utils;
 pub mod pic;
+pub mod serial;
 extern {
     fn run_interrupt ();
     fn test1 ();
@@ -19,6 +20,7 @@ extern {
 
 #[no_mangle]
 pub unsafe fn main() {
+    serial::init();
     idt::idt_install();
     stdio::clear_screen();
     test1();
