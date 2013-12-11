@@ -1,12 +1,16 @@
-# rustboot
+# puddle
 
-A tiny 32 bit kernel written in Rust.
+A tiny 32-bit kernel written in Rust, for fun. Splashing in puddles is fun but often impractical, and your feet get wet. unless you wear boots.
 
-I was inspired to download Rust and try to do this after seeing [zero.rs](https://github.com/pcwalton/zero.rs) - a stub that lets Rust programs run almost freestanding.
+This has also been my experience with OS programming.
 
-It paints the screen bright red and then hangs. That's it:
+Fork of [rustboot](https://github.com/charliesome/rustboot). Uses [rust-core](https://github.com/thestinger/rust-core), a library that lets Rust programs run freestanding.
 
-![](http://i.imgur.com/NWRehJJ.png)
+<img src="http://i.imgur.com/rtBQHM3.gif">
+
+## What it does
+
+Right now it lets you type with your keyboard and it will echo the characters to the screen. And there's memory allocation! [Here's a video of typing!](http://www.youtube.com/watch?v=y9JJnKWczeg&feature=share&list=PL9lyxiuAW2cc_zd9hBBGlDMapzXZDzVRo&index=2).
 
 ## Setup
 
@@ -40,7 +44,9 @@ $ ./configure --target=i386-elf --prefix=/Users/steve
 $ make && make install
 ```
 
-To get edge Rust going, grab it from git:
+To get Rust, you can either use one of the [nightly builds](https://github.com/mozilla/rust/wiki/Doc-packages,-editors,-and-other-tools) for Linux or compile it from source.
+
+To compile Rust, grab it from git:
 
 ```bash
 $ git clone https://github.com/mozilla/rust
@@ -50,7 +56,7 @@ $ ./configure --prefix=/Users/steve
 $ make && make install
 ```
 
-Same thing about the prefix applies.
+Same thing about the prefix applies. 
 
 Then, just make sure that `~/bin` is in your `PATH`, if you're using a prefix.
 
