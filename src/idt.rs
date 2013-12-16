@@ -39,7 +39,6 @@ pub static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
 #[no_mangle]
 unsafe fn idt_set_gate(num: u8, f: extern "C" unsafe fn(), sel: u16, flags: u8)
 {
-
     let base = f as u32;
     idt[num].sel = sel;
     idt[num].flags = flags;

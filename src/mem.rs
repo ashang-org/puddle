@@ -1,7 +1,3 @@
-#[allow(ctypes)];
-#[feature(asm)];
-#[feature(macro_rules)];
-
 use core::mem::size_of;
 
 static mut base: uint = 0x200000;
