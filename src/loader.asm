@@ -1,6 +1,5 @@
 use16
 
-global test1                   
 org 0x7c00
 
 boot:
