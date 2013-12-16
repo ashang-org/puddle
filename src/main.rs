@@ -3,8 +3,7 @@
 #[feature(asm)];
 #[feature(macro_rules)];
 
-#[path = "rust-core/core/mod.rs"]
-mod core;
+extern mod core;
 pub mod idt;
 pub mod kbd;
 pub mod mem;

@@ -1,6 +1,6 @@
 CC=i386-elf-gcc
 LD=i386-elf-ld
-RUSTC=rustc
+RUSTC := rustc --cfg libc -Z no-landing-pads -O --target i386-intel-linux
 NASM=nasm
 QEMU=qemu-system-i386
 BUILDDIR=./build
@@ -21,15 +21,20 @@ $(OBJDIR)/%.asm.o: src/%.asm
 	mkdir -p $(OBJDIR)
 	$(NASM) -f elf32 -o $@ $<
 
-$(OBJDIR)/main.o: src/main.rs
+$(OBJDIR)/main.bc: src/main.rs
 	mkdir -p $(OBJDIR)
-	$(RUSTC) -O --target i386-intel-linux --cfg libc --lib -o $@ -c $<
+	$(RUSTC) src/rust-core/core/lib.rs --out-dir $(BUILDDIR)
+	$(RUSTC) --lib --emit-llvm -L $(BUILDDIR) -o $@ $<
+
+$(OBJDIR)/main.o: $(OBJDIR)/main.bc
+	clang -c -O2 -o $@ $<
+
 
 $(BUILDDIR)/loader.bin: src/loader.asm
 	mkdir -p $(BUILDDIR)
 	$(NASM) -o $@ -f bin $<
 
-$(BUILDDIR)/main.elf: src/linker.ld $(OBJS)
+$(BUILDDIR)/main.elf: src/linker.ld $(OBJS) 
 	mkdir -p $(BUILDDIR)
 	$(LD) -o $@ -T $^
 
