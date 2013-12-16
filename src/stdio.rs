@@ -96,16 +96,9 @@ fn make_vgaentry(c: u8, fg: Color, bg: Color) -> u16 {
     return c as u16 | (color << 8);
 }
 
-pub fn write(x: u16, y: u16, s: &str) {
+pub fn write(s: &str) {
     let bytes : &[u8] = as_bytes(s);
-    let mut ix = x;
-    let mut iy = y;
     for b in super::core::slice::iter(bytes) {
-        putchar(ix, iy, *b);
-        if (ix > VGA_WIDTH * 2) {
-            ix = ix - VGA_WIDTH * 2;
-            iy += 1;
-        }
-        ix += 1;
+        putc(*b);
     }
 }
