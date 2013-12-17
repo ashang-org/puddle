@@ -21,6 +21,10 @@ You need a few things to run rustboot:
 3. `nasm`
 4. Rust's `incoming` branch.
 
+
+**Warning: This doesn't compile right now, because I need to make
+modifications to rust-core**. If you want to run it, ask me how.
+
 ### OSX
 
 To set things up on OSX, do this:

@@ -13,7 +13,7 @@ boot:
     mov sp, ax
     ; load rust code into 0x7e00 so we can jump to it later
     mov ah, 2       ; read
-    mov al, 48      ; 48 sectors (48 KiB)
+    mov al, 48      ; 48 sectors (24 KiB)
     mov ch, 0       ; cylinder & 0xff
     mov cl, 2       ; sector | ((cylinder >> 2) & 0xc0)
     mov dh, 0       ; head
