@@ -4,6 +4,7 @@ org 0x7c00
 
 boot:
     ; initialize segment registers
+    ;; TODO: I don't know what this does
     xor ax, ax
     mov ds, ax
     mov es, ax
