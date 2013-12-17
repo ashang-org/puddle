@@ -81,6 +81,18 @@ pub fn newline() {
     }
 }
 
+pub fn print_num(x: uint) {
+    putc('|' as u8);
+    putc(' ' as u8);
+    putc((((x / 1000000) % 10) as u8) + ('0' as u8));
+    putc((((x / 100000) % 10) as u8) + ('0' as u8));
+    putc((((x / 10000) % 10) as u8) + ('0' as u8));
+    putc((((x / 1000) % 10) as u8) + ('0' as u8));
+    putc((((x / 100) % 10) as u8) + ('0' as u8));
+    putc((((x / 10) % 10) as u8) + ('0' as u8));
+    putc(((x % 10) as u8) + ('0' as u8));
+    putc(' ' as u8);
+}
 pub fn putchar(x: u16, y: u16, c: u8) {
     if (x >= VGA_WIDTH || y >= VGA_HEIGHT) {
         return;
