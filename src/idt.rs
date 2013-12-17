@@ -30,8 +30,6 @@ pub static mut idt: [IDTEntry, ..256] = [IDTEntry {base_lo: 0, sel: 0, zero: 0, 
 #[no_mangle]
 pub static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
 
-
-
 /* Use this function to set an entry in the IDT. A lot simpler
 *  than twiddling with the GDT ;) */
 #[no_mangle]
