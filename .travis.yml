@@ -1,0 +1,8 @@
+before_install:
+    - yes | sudo add-apt-repository ppa:hansjorg/rust
+    - yes | sudo add-apt-repository ppa:kxstudio-team/builds
+    - sudo apt-get update
+install:
+    - sudo apt-get install rust-nightly nasm build-essential clang
+script:
+    - make
