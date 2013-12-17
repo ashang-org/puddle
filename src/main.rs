@@ -14,9 +14,9 @@ pub mod utils;
 
 #[no_mangle]
 pub unsafe fn main() {
+    stdio::clear_screen();
     serial::init();
     idt::idt_install();
-    stdio::clear_screen();
     serial::write("Starting...\n");
 }
 

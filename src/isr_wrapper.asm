@@ -6,6 +6,7 @@ global  run_interrupt
 align   4
 
 extern _interrupt_handler_kbd
+extern idt
 
 _interrupt_handler_kbd_wrapper: 
     pushad
@@ -26,13 +27,6 @@ int_handler:
    popad
    iret
 
-idt:
-   resd 50*2
-
-idtr:
-   dw (50*8)-1
-   dd idt
-
 test1:
    lidt [idtr]
 
@@ -44,4 +38,8 @@ test1:
    mov [idt+33*8+6],ax
 
    ret
+
+idtr:
+   dw (50*8)-1
+   dd idt
 

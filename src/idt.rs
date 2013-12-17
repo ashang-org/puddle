@@ -1,5 +1,6 @@
 use utils::outb;
 use pic::PIC_remap;
+use stdio;
 
 mod pic;
 /* Defines an IDT entry */
@@ -27,7 +28,7 @@ struct IDTPointer {
  *  "Unhandled Interrupt" exception */
 
 #[no_mangle]
-static mut idt: [IDTEntry, ..256] = [IDTEntry {base_lo: 0, sel: 0, zero: 0, flags: 0, base_hi: 0}, ..256];
+pub static mut idt: [IDTEntry, ..256] = [IDTEntry {base_lo: 0, sel: 0, zero: 0, flags: 0, base_hi: 0}, ..256];
 
 #[no_mangle]
 pub static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
@@ -43,7 +44,7 @@ unsafe fn idt_set_gate(num: u8, f: extern "C" unsafe fn(), sel: u16, flags: u8)
     idt[num].sel = sel;
     idt[num].flags = flags;
     idt[num].base_hi = (base >> 16) as u16;
-    idt[num].base_lo = (base & (1 << 16 - 1)) as u16;
+    idt[num].base_lo = (base & ((1 << 16) - 1)) as u16;
 }
 
 /* Installs the IDT */
@@ -61,12 +62,11 @@ pub unsafe fn idt_install() {
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
     //let on_flags: u8 = 0b10001110; // on, ring = 0
-    //let flags = 0x8E;
-    //let mut i: uint = 0;
-    //while i < 256 {
-    //    idt_set_gate(i as u8, _interrupt_handler_kbd_wrapper, 0x08, flags);
-    //    i += 1;
-    //}
+    let mut i: uint = 0;
+    while i < 256 {
+        idt_set_gate(i as u8, _interrupt_handler_kbd_wrapper, 0x08, 0x8E);
+        i += 1;
+    }
 
     test1();
     PIC_remap();
