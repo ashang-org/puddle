@@ -51,7 +51,7 @@ fn idt_set_gate(num: u8, f: extern "C" unsafe fn(), sel: u16, flags: u8)
 
 /* Installs the IDT */
 extern {
-    fn int_handler ();
+    fn int_handler_kbd_wrapper ();
 }
 
 #[no_mangle]
@@ -61,7 +61,7 @@ pub unsafe fn idt_install() {
     idtp.base = &idt as *[IDTEntry, ..256] as u32;
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
-    idt_set_gate(33, int_handler, 0x08, 0x8E);
+    idt_set_gate(33, int_handler_kbd_wrapper, 0x08, 0x8E);
 
     /* Remap the PIC */
     PIC_remap();
@@ -70,7 +70,7 @@ pub unsafe fn idt_install() {
     outb(0xa1,0xff);
 
     /* Turn interrupts on */
-    asm!("sti");
     asm!("lidt ($0)" :: "r" (idtp));
+    asm!("sti");
 }
 		
