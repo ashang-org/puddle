@@ -43,12 +43,5 @@ test1:
    shr eax,16
    mov [idt+33*8+6],ax
 
-   mov eax,int_handler
-   mov [idt+1*8],ax
-   mov word [idt+1*8+2],0x08
-   mov word [idt+1*8+4],0x8E00
-   shr eax,16
-   mov [idt+1*8+6],ax
-
    ret
 
