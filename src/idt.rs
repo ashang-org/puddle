@@ -1,8 +1,7 @@
-use utils::outb;
 use pic::PIC_remap;
 use stdio;
+use utils::outb;
 
-mod pic;
 /* Defines an IDT entry */
 #[packed]
 struct IDTEntry {
@@ -20,12 +19,10 @@ struct IDTPointer {
     base: u32
 }
 
-/* Declare an IDT of 256 entries. Although we will only use the
- *  first 32 entries in this tutorial, the rest exists as a bit
- *  of a trap. If any undefined IDT entry is hit, it normally
- *  will cause an "Unhandled Interrupt" exception. Any descriptor
- *  for which the 'presence' bit is cleared (0) will generate an
- *  "Unhandled Interrupt" exception */
+/* Declare an IDT of 256 entries. If any undefined IDT entry is hit,
+ * it normally will cause an "Unhandled Interrupt" exception. Any
+ * descriptor for which the 'presence' bit is cleared (0) will generate
+ * an "Unhandled Interrupt" exception */
 
 #[no_mangle]
 pub static mut idt: [IDTEntry, ..256] = [IDTEntry {base_lo: 0, sel: 0, zero: 0, flags: 0, base_hi: 0}, ..256];
