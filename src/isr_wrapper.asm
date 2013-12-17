@@ -8,13 +8,6 @@ align   4
 extern _interrupt_handler_kbd
 extern idt
 
-_interrupt_handler_kbd_wrapper: 
-    pushad
-    call    _interrupt_handler_kbd 
-    popad
-    iret
-
-
 run_interrupt:
    int 33
    ret
@@ -29,14 +22,6 @@ int_handler:
 
 test1:
    lidt [idtr]
-
-   mov eax,int_handler
-   mov [idt+33*8],ax
-   mov word [idt+33*8+2],0x08
-   mov word [idt+33*8+4],0x8E00
-   shr eax,16
-   mov [idt+33*8+6],ax
-
    ret
 
 idtr:
