@@ -51,29 +51,24 @@ unsafe fn idt_set_gate(num: u8, f: extern "C" unsafe fn(), sel: u16, flags: u8)
 extern {
     fn idt_load(x: *IDTPointer);
     fn int_handler ();
-    fn test1 ();
 }
 
 #[no_mangle]
 pub unsafe fn idt_install() {
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
-    //idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
-    //idtp.base = &idt as *[IDTEntry, ..256] as u32;
+    idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
+    idtp.base = &idt as *[IDTEntry, ..256] as u32;
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
     //let on_flags: u8 = 0b10001110; // on, ring = 0
     let mut i: uint = 0;
-    while i < 256 {
-        idt_set_gate(i as u8, int_handler, 0x08, 0x8E);
-        i += 1;
-    }
-
-    test1();
+    idt_set_gate(33, int_handler, 0x08, 0x8E);
     PIC_remap();
+
     outb(0x21,0xfd); // Keyboard interrupts only
     outb(0xa1,0xff);
     asm!("sti");
-    //asm!("lidt ($0)" :: "r" (idtp));
+    asm!("lidt ($0)" :: "r" (idtp));
 
     /* Points the processor's internal register to the new IDT */
 }
