@@ -32,6 +32,7 @@ struct ELFHeader {
 pub fn read_header<'a>(contents: &'a [u8]) -> &'a ELFHeader {
     unsafe {
         let x : *ELFHeader = to_ptr(contents) as *ELFHeader;
+        //let x : *ELFHeader = contents.as_ptr() as *ELFHeader;
         return &*x;
     }
 }
@@ -43,7 +44,7 @@ fn test_read_elf_from_file() {
     let path = Path::new("build/programs/do-nothing");
     let mut stream = File::open_mode(&path, Open, ReadWrite);
     let bytes = stream.read_to_end();
-    let header = read_elf_header(bytes);
+    let header = read_header(bytes);
     // Check the magic bytes
     assert!(header.e_ident.ei_mag.slice(1,4) == "ELF".as_bytes());
     assert!(header.e_entry == 0x80480b8);

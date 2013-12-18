@@ -20,6 +20,6 @@ pub unsafe fn main() {
     serial::init();
     idt::idt_install();
     serial::write("Starting...\n");
-    exec::exec(0xd330);
+    exec::exec(0xd3b0);
 }
 
