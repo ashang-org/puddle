@@ -1,9 +1,10 @@
-CC=gcc
+CC=gcc -m32
 LD=ld
 RUSTC := rustc --cfg libc -Z no-landing-pads -O --target i386-intel-linux
 NASM=nasm
 QEMU=qemu-system-i386
 BUILDDIR=./build
+PROGDIR=./src/programs
 OBJDIR=$(BUILDDIR)/obj
 
 
@@ -53,3 +54,8 @@ debug: $(BUILDDIR)/floppy.img
 
 clean:
 	-rm -rf $(BUILDDIR)
+
+$(PROGDIR)/%: $(PROGDIR)/%.c
+	$(CC) -static -nostdlib -o $@ $<
+	
+test: $(PROGDIR)/do-nothing
