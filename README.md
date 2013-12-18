@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jvns/puddle.png?branch=master)](https://travis-ci.org/jvns/puddle)
+
 # puddle
 
 A tiny 32-bit kernel written in Rust, for fun. Splashing in puddles is fun but often impractical, and your feet get wet. unless you wear boots.
@@ -7,6 +9,9 @@ This has also been my experience with OS programming.
 Fork of [rustboot](https://github.com/charliesome/rustboot). Uses [rust-core](https://github.com/thestinger/rust-core), a library that lets Rust programs run freestanding.
 
 <img src="http://i.imgur.com/rtBQHM3.gif">
+
+**Warning: This doesn't compile right now using straight rust-core**. When the Travis build above is passing, you will know that this is fixed.
+
 
 ## What it does
 
@@ -21,9 +26,6 @@ You need a few things to run rustboot:
 3. `nasm`
 4. Rust's `incoming` branch.
 
-
-**Warning: This doesn't compile right now, because I need to make
-modifications to rust-core**. If you want to run it, ask me how.
 
 ### OSX
 
