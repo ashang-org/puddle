@@ -9,6 +9,8 @@ OBJDIR=$(BUILDDIR)/obj
 
 
 OBJS := $(OBJDIR)/runtime.asm.o $(OBJDIR)/main.o $(OBJDIR)/isr_wrapper.asm.o
+PROGRAMS = $(BUILDDIR)/programs/do-nothing.o
+
 
 all: $(BUILDDIR)/floppy.img
 
@@ -35,7 +37,7 @@ $(BUILDDIR)/loader.bin: src/loader.asm
 	mkdir -p $(BUILDDIR)
 	$(NASM) -o $@ -f bin $<
 
-$(BUILDDIR)/main.elf: src/linker.ld $(OBJS) 
+$(BUILDDIR)/main.elf: src/linker.ld $(OBJS) $(PROGRAMS)
 	mkdir -p $(BUILDDIR)
 	$(LD) -Map=$(BUILDDIR)/linker.map -o $@ -T $^ "-(" build/libcore-2e829c2f-0.0.rlib "-)"
 
@@ -55,7 +57,11 @@ debug: $(BUILDDIR)/floppy.img
 clean:
 	-rm -rf $(BUILDDIR)
 
-$(PROGDIR)/%: $(PROGDIR)/%.c
+$(BUILDDIR)/programs/%: $(PROGDIR)/%.c
+	mkdir -p $(BUILDDIR)/programs
 	$(CC) -static -nostdlib -o $@ $<
-	
-test: $(PROGDIR)/do-nothing
+
+$(BUILDDIR)/programs/%.o: $(BUILDDIR)/programs/%
+	objcopy -B i386 -I binary -O elf32-i386 $< $@
+
+test: $(PROGDIR)/do-nothing.o
