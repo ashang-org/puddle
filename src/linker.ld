@@ -10,4 +10,9 @@ SECTIONS {
   .bss : {
     *(.bss*);
   }
+
+  . = 0x10000;
+  .donothing : {
+    *(._binary_build_programs_do_nothing_start);
+  }
  }
