@@ -1,3 +1,5 @@
+use core::slice::to_ptr;
+
 #[packed]
 struct ELFIdent {
     ei_mag: [u8, ..4], 
@@ -27,9 +29,9 @@ struct ELFHeader {
     e_shstrndx: u16
 }
 
-fn read_elf_header<'a>(contents: &'a [u8]) -> &'a ELFHeader {
+pub fn read_header<'a>(contents: &'a [u8]) -> &'a ELFHeader {
     unsafe {
-        let x : *ELFHeader = contents.as_ptr() as *ELFHeader;
+        let x : *ELFHeader = to_ptr(contents) as *ELFHeader;
         return &*x;
     }
 }
