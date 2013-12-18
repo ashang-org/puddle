@@ -64,4 +64,5 @@ $(BUILDDIR)/programs/%: $(PROGDIR)/%.c
 $(BUILDDIR)/programs/%.o: $(BUILDDIR)/programs/%
 	objcopy -B i386 -I binary -O elf32-i386 $< $@
 
-test: $(PROGDIR)/do-nothing.o
+test: $(BUILDDIR)/programs/do-nothing
+	rustc --test src/elf.rs && src/elf

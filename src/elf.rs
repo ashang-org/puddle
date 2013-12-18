@@ -1,4 +1,3 @@
-
 #[packed]
 struct ELFIdent {
     ei_mag: [u8, ..4], 
@@ -45,4 +44,5 @@ fn test_read_elf_from_file() {
     let header = read_elf_header(bytes);
     // Check the magic bytes
     assert!(header.e_ident.ei_mag.slice(1,4) == "ELF".as_bytes());
+    assert!(header.e_entry == 0x80480b8);
 }
