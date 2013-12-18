@@ -1,5 +1,5 @@
-CC=i386-elf-gcc
-LD=i386-elf-ld
+CC=gcc
+LD=ld
 RUSTC := rustc --cfg libc -Z no-landing-pads -O --target i386-intel-linux
 NASM=nasm
 QEMU=qemu-system-i386
