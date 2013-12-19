@@ -10,8 +10,8 @@ unsafe fn jmp(addr: u32) {
 }
 
 pub unsafe fn exec(addr: uint) {
-    let slice = Slice {data: (addr as *u8), len: 100};
-    let header = elf::read_header(transmute(slice));
+    let bytes: &[u8] = transmute(Slice {data: (addr as *u8), len: 100});
+    let header = elf::read_header(bytes);
     stdio::putc(header.e_ident.ei_mag[1]);
     stdio::putc(header.e_ident.ei_mag[2]);
     stdio::putc(header.e_ident.ei_mag[3]);

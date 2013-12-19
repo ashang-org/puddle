@@ -1,4 +1,15 @@
 use core::slice::to_ptr;
+use core::vec::Vec;
+
+enum HeaderType {
+    PT_NULL = 0,
+    PT_LOAD = 1,
+    PT_DYNAMIC = 2,
+    PT_INTERP = 3,
+    PT_NOTE = 4,
+    PT_SHLIB = 5,
+    PT_PHDR = 6
+}
 
 #[packed]
 struct ELFIdent {
@@ -29,11 +40,40 @@ struct ELFHeader {
     e_shstrndx: u16
 }
 
-pub fn read_header<'a>(contents: &'a [u8]) -> &'a ELFHeader {
+#[packed]
+struct ProgramHeader {
+    p_type: u32,
+    p_offset: u32,
+    p_vaddr: u32,
+    p_paddr: u32,
+    p_filesz: u32,
+    p_memsz: u32,
+    p_flags: u32
+}
+
+
+pub fn read_program_header<'a>(file: &'a [u8], header: &ELFHeader) -> &'a ProgramHeader {
     unsafe {
-        let x : *ELFHeader = to_ptr(contents) as *ELFHeader;
-        //let x : *ELFHeader = contents.as_ptr() as *ELFHeader;
+        let x : *ProgramHeader = to_ptr(file) as *ProgramHeader;
+        //let x : *ProgramHeader = file.as_ptr() as *ProgramHeader;
         return &*x;
+    }
+}
+
+
+pub fn read_header<'a>(file: &'a [u8]) -> &'a ELFHeader {
+    unsafe {
+        let x : *ELFHeader = to_ptr(file) as *ELFHeader;
+        //let x : *ELFHeader = file.as_ptr() as *ELFHeader;
+        return &*x;
+    }
+}
+
+pub fn read_segments<'a>(file: &'a [u8], header: &ELFHeader) -> &'a [ProgramHeader] {
+    let n_headers = header.e_phnum;
+    let segments: Vec<u8> = Vec::with_capacity(n_headers as uint);
+    {
+        let segments_mut = segments.as_mut_slice();
     }
 }
 
