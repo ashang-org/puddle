@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/jvns/puddle.png?branch=master)](https://travis-ci.org/jvns/puddle)
 
+**Warning: This doesn't compile right now for anyone except me**. When the Travis build above is passing, you will know that this is fixed. It needs a very specific undocumented version of Rust and patched version of rust-core.
+
 # puddle
 
 A tiny 32-bit kernel written in Rust, for fun. Splashing in puddles is fun but often impractical, and your feet get wet. unless you wear boots.
@@ -10,7 +12,6 @@ Fork of [rustboot](https://github.com/charliesome/rustboot). Uses [rust-core](ht
 
 <img src="http://i.imgur.com/rtBQHM3.gif">
 
-**Warning: This doesn't compile right now using straight rust-core**. When the Travis build above is passing, you will know that this is fixed.
 
 
 ## What it does
