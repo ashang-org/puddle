@@ -2,6 +2,8 @@
 
 **Warning: This doesn't compile right now for anyone except me**. When the Travis build above is passing, you will know that this is fixed. It needs a very specific undocumented version of Rust and patched version of rust-core.
 
+I will also probably not fix it unless I start working on this again.
+
 # puddle
 
 A tiny 32-bit kernel written in Rust, for fun. Splashing in puddles is fun but often impractical, and your feet get wet. unless you wear boots.
